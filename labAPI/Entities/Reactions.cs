@@ -1,8 +1,11 @@
-﻿namespace labAPI.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace labAPI.Entities
 {
     public class Reactions
     {
-        public string id { get; set; }
+        [Key]
+        public string Id { get; set; }
         public string Structure { get; set; }
     }
 }

@@ -1,7 +1,10 @@
-﻿namespace labAPI.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace labAPI.Entities
 {
     public class Staff
     {
+        [Key]
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

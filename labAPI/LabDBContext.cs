@@ -17,7 +17,7 @@ namespace labAPI
         public DbSet<Experiment> Experiment { get; set; }
         public DbSet<NonAcademic> NonAcademic { get; set;}
         public DbSet<Reactions> Reactions { get; set; }
-        public DbSet<Staff> Staff { get; set; }
+        //public DbSet<Staff> Staff { get; set; }
 
     }
 }
