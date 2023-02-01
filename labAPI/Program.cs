@@ -1,5 +1,6 @@
-using labAPI;
+﻿using labAPI;
 using Microsoft.EntityFrameworkCore;      
+using labAPI.Controllers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,5 +30,13 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapLabEndpoints();
+
+app.MapAcademicEndpoints();
+
+app.MapChemicalsEndpoints();
+
+app.MapEquipmentEndpoints();
 
 app.Run();
