@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using labAPI;
 
@@ -10,9 +11,11 @@ using labAPI;
 namespace labAPI.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230212124028_addLogin")]
+    partial class addLogin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +51,7 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Academics", (string)null);
+                    b.ToTable("Academics");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Chemicals", b =>
@@ -74,7 +77,7 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chemicals", (string)null);
+                    b.ToTable("Chemicals");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Elements", b =>
@@ -91,7 +94,7 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Elements", (string)null);
+                    b.ToTable("Elements");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Equipment", b =>
@@ -108,7 +111,7 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Equipment", (string)null);
+                    b.ToTable("Equipment");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Experiment", b =>
@@ -122,7 +125,7 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Experiment", (string)null);
+                    b.ToTable("Experiment");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Lab", b =>
@@ -152,7 +155,7 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Labs", (string)null);
+                    b.ToTable("Labs");
                 });
 
             modelBuilder.Entity("labAPI.Entities.NonAcademic", b =>
@@ -182,7 +185,7 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NonAcademic", (string)null);
+                    b.ToTable("NonAcademic");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Reactions", b =>
@@ -196,7 +199,7 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reactions", (string)null);
+                    b.ToTable("Reactions");
                 });
 #pragma warning restore 612, 618
         }

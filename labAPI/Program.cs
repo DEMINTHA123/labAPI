@@ -1,9 +1,11 @@
 ﻿using labAPI;
 using Microsoft.EntityFrameworkCore;      
 using labAPI.Controllers;
-
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors();
 
 // Add services to the container.
 builder.Services.AddDbContext<LabDBContext>(options =>
@@ -14,8 +16,14 @@ builder.Services.AddDbContext<LabDBContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSwaggerGen();
-
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new MappingProfiles());
+});
+IMapper autoMapper = mappingConfig.CreateMapper();
+builder.Services.AddSingleton(autoMapper);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +34,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(x => x
+.AllowAnyMethod()
+.AllowAnyHeader()
+.SetIsOriginAllowed(origin =>true)
+.AllowCredentials()
+);
 
 app.UseAuthorization();
 
