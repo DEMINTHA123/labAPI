@@ -1,7 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using labAPI;
+using labAPI.DTOs;
 using labAPI.Entities;
+using Azure.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using AutoMapper;
+using labAPI.DTOs.ChemicalsDTO;
+using labAPI.DTOs.ElementsDTO;
+
 namespace labAPI.Controllers;
 
 public static class ElementsEndpoints
@@ -17,11 +24,11 @@ public static class ElementsEndpoints
         })
         .WithName("GetAllElements");
 
-        group.MapGet("/{id}", async Task<Results<Ok<Elements>, NotFound>> (string id, LabDBContext db) =>
+        group.MapGet("/{id}", async Task<Results<Ok<ElementsOutputDTO>, NotFound>> (string id, LabDBContext db, IMapper _mapper) =>
         {
             return await db.Elements.FindAsync(id)
                 is Elements model
-                    ? TypedResults.Ok(model)
+                    ? TypedResults.Ok(_mapper.Map< ElementsOutputDTO > (model))
                     : TypedResults.NotFound();
         })
         .WithName("GetElementById");
@@ -42,21 +49,21 @@ public static class ElementsEndpoints
         })
         .WithName("UpdateElement");
 
-        group.MapPost("/", async (Elements elements, LabDBContext db) =>
+        group.MapPost("/", async (ElementsInputDTO elements, LabDBContext db,IMapper _mapper) =>
         {
-            db.Elements.Add(elements);
+            db.Elements.Add(_mapper.Map<Elements>(elements));
             await db.SaveChangesAsync();
             return TypedResults.Created($"/api/Lab/{elements.Id}", elements);
         })
         .WithName("CreateElement");
 
-        group.MapDelete("/{id}", async Task<Results<Ok<Elements>, NotFound>> (string id, LabDBContext db) =>
+        group.MapDelete("/{id}", async Task<Results<Ok<ElementsOutputDTO>, NotFound>> (string id, LabDBContext db, IMapper _mapper) =>
         {
             if (await db.Elements.FindAsync(id) is Elements elements)
             {
                 db.Elements.Remove(elements);
                 await db.SaveChangesAsync();
-                return TypedResults.Ok(elements);
+                return TypedResults.Ok(_mapper.Map<ElementsOutputDTO>(elements));
             }
 
             return TypedResults.NotFound();

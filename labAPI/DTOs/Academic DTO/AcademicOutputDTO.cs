@@ -1,6 +1,10 @@
-﻿namespace labAPI.DTOs
+﻿using labAPI.DTOs.StaffDTO;
+
+namespace labAPI.DTOs
 {
-    public class AcademicOutputDTO
+    public class AcademicOutputDTO : StaffOutputDTO
     {
+        public string Experties { get; set; }
+
     }
 }

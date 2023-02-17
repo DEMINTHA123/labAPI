@@ -1,7 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using labAPI;
+using labAPI.DTOs;
 using labAPI.Entities;
+using Azure.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using AutoMapper;
+using labAPI.DTOs.ChemicalsDTO;
+using labAPI.DTOs.ElementsDTO;
+using labAPI.DTOs.EquipmentDTO;
+
 namespace labAPI.Controllers;
 
 public static class EquipmentEndpoints
@@ -16,11 +24,11 @@ public static class EquipmentEndpoints
         })
         .WithName("GetAllEquipment");
 
-        group.MapGet("/{id}", async Task<Results<Ok<Equipment>, NotFound>> (string id, LabDBContext db) =>
+        group.MapGet("/{id}", async Task<Results<Ok<EquipmentOutputDTO>, NotFound>> (string id, LabDBContext db, IMapper _mapper) =>
         {
             return await db.Equipment.FindAsync(id)
                 is Equipment model
-                    ? TypedResults.Ok(model)
+                    ? TypedResults.Ok(_mapper.Map< EquipmentOutputDTO > (model))
                     : TypedResults.NotFound();
         })
         .WithName("GetEquipmentById");

@@ -1,7 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using labAPI;
+using labAPI.DTOs;
 using labAPI.Entities;
+using Azure.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using AutoMapper;
+using labAPI.DTOs.ChemicalsDTO;
+using labAPI.DTOs.ElementsDTO;
+using labAPI.DTOs.EquipmentDTO;
+using labAPI.DTOs.ExperimentDTO;
 
 namespace labAPI.Controllers
 {
@@ -16,16 +24,16 @@ namespace labAPI.Controllers
             })
             .WithName("GetAllExperiments");
 
-            group.MapGet("/{id}", async Task<Results<Ok<Experiment>, NotFound>> (string id, LabDBContext db) =>
+            group.MapGet("/{id}", async Task<Results<Ok<ExperimentOutputDTO>, NotFound>> (string id, LabDBContext db, IMapper _mapper) =>
             {
                 return await db.Experiment.FindAsync(id)
                     is Experiment model
-                        ? TypedResults.Ok(model)
+                        ? TypedResults.Ok(_mapper.Map< ExperimentOutputDTO > (model))
                         : TypedResults.NotFound();
             })
           .WithName("GetAExperimentById");
 
-            group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (string id, Experiment experiment, LabDBContext db) =>
+            group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (string id, ExperimentInputDTO experiment, LabDBContext db, IMapper _mapper) =>
             {
                 var foundModel = await db.Experiment.FindAsync(id);
 
@@ -41,21 +49,21 @@ namespace labAPI.Controllers
             })
           .WithName("UpdateExperiment");
 
-            group.MapPost("/", async (Experiment experiment, LabDBContext db) =>
+            group.MapPost("/", async (ExperimentInputDTO experiment, LabDBContext db, IMapper _mapper) =>
             {
-                db.Experiment.Add(experiment);
+                db.Experiment.Add(_mapper.Map<Experiment>(experiment));
                 await db.SaveChangesAsync();
                 return TypedResults.Created($"/api/Lab/{experiment.Id}", experiment);
             })
             .WithName("CreateExperiment");
 
-            group.MapDelete("/{id}", async Task<Results<Ok<Experiment>, NotFound>> (string id, LabDBContext db) =>
+            group.MapDelete("/{id}", async Task<Results<Ok<ExperimentOutputDTO>, NotFound>> (string id, LabDBContext db, IMapper _mapper) =>
             {
                 if (await db.Experiment.FindAsync(id) is  Experiment experiment)
                 {
                     db.Experiment.Remove(experiment);
                     await db.SaveChangesAsync();
-                    return TypedResults.Ok(experiment);
+                    return TypedResults.Ok(_mapper.Map<ExperimentOutputDTO>(experiment));
                 }
 
                 return TypedResults.NotFound();

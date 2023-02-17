@@ -1,7 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
 using labAPI;
+using labAPI.DTOs;
 using labAPI.Entities;
+using Azure.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using AutoMapper;
+using labAPI.DTOs.ChemicalsDTO;
+using labAPI.DTOs.ElementsDTO;
+using labAPI.DTOs.EquipmentDTO;
+using labAPI.DTOs.ExperimentDTO;
+using labAPI.DTOs.NonAccademic_DTO;
 
 namespace labAPI.Controllers
 {
@@ -16,16 +25,16 @@ namespace labAPI.Controllers
             })
             .WithName("GetAllNonAcademics");
 
-            group.MapGet("/{id}", async Task<Results<Ok<NonAcademic>, NotFound>> (string id, LabDBContext db) =>
+            group.MapGet("/{id}", async Task<Results<Ok<NonAcademicOutputDTO>, NotFound>> (string id, LabDBContext db, IMapper _mapper) =>
             {
                 return await db.NonAcademic.FindAsync(id)
                     is NonAcademic model
-                        ? TypedResults.Ok(model)
+                        ? TypedResults.Ok(_mapper.Map< NonAcademicOutputDTO > (model))
                         : TypedResults.NotFound();
             })
           .WithName("GetANonacademicsById");
 
-            group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (string id, NonAcademic nonAcademic, LabDBContext db) =>
+            group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (string id, NonAcademicInputDTO nonAcademic, LabDBContext db, IMapper _mapper) =>
             {
                 var foundModel = await db.NonAcademic.FindAsync(id);
 
@@ -41,21 +50,21 @@ namespace labAPI.Controllers
             })
           .WithName("UpdateNonAcademics");
 
-            group.MapPost("/", async (NonAcademic nonAcademic, LabDBContext db) =>
+            group.MapPost("/", async (NonAcademicInputDTO nonAcademic, LabDBContext db, IMapper _mapper) =>
             {
-                db.NonAcademic.Add(nonAcademic);
+                db.NonAcademic.Add(_mapper.Map<NonAcademic>(nonAcademic));
                 await db.SaveChangesAsync();
                 return TypedResults.Created($"/api/Lab/{nonAcademic.Id}", nonAcademic);
             })
             .WithName("CreateNonacademics");
 
-            group.MapDelete("/{id}", async Task<Results<Ok<NonAcademic>, NotFound>> (string id, LabDBContext db) =>
+            group.MapDelete("/{id}", async Task<Results<Ok<NonAcademicOutputDTO>, NotFound>> (string id, LabDBContext db, IMapper _mapper) =>
             {
                 if (await db.NonAcademic.FindAsync(id) is NonAcademic nonAcademic)
                 {
                     db.NonAcademic.Remove(nonAcademic);
                     await db.SaveChangesAsync();
-                    return TypedResults.Ok(nonAcademic);
+                    return TypedResults.Ok(_mapper.Map<NonAcademicOutputDTO>(nonAcademic));
                 }
 
                 return TypedResults.NotFound();

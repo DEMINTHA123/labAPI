@@ -1,6 +1,8 @@
-﻿namespace labAPI.DTOs.NonAccademic_DTO
+﻿using labAPI.DTOs.StaffDTO;
+
+namespace labAPI.DTOs.NonAccademic_DTO
 {
-    public class NonAcademicOutputDTO
+    public class NonAcademicOutputDTO : StaffOutputDTO
     {
         public string PhysicalSkill { get; set; }
 
