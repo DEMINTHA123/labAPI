@@ -38,8 +38,8 @@ app.UseHttpsRedirection();
 app.UseCors(x => x
 .AllowAnyMethod()
 .AllowAnyHeader()
+.AllowAnyOrigin()
 .SetIsOriginAllowed(origin =>true)
-.AllowCredentials()
 );
 
 app.UseAuthorization();
@@ -53,5 +53,11 @@ app.MapAcademicEndpoints();
 app.MapChemicalsEndpoints();
 
 app.MapEquipmentEndpoints();
+
+app.MapNonAcademicEndpoints();
+
+app.MapElementsEndpoints();
+
+app.MapExperimentEndpoints();
 
 app.Run();

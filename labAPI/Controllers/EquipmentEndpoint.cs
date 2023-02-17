@@ -70,6 +70,6 @@ public static class EquipmentEndpoints
 
             return TypedResults.NotFound();
         })
-        .WithName("DeleteElement");
+        .WithName("DeleteEquipment");
     }
 }

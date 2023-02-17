@@ -7,6 +7,7 @@ using AutoMapper;
 using Azure.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 
 namespace labAPI.Controllers;
 
@@ -75,7 +76,7 @@ public static class LabEndpoints
         .WithName("DeleteLab")
         ;
 
-        group.MapPost("/LoginLab", async Task<Results<Ok<bool>, NotFound>> (LoginDTO labInputLogin, LabDBContext db, IMapper _mapper) =>
+        group.MapPost("/LoginLab", async Task<Results<Ok<bool>, NotFound>> ([FromBody]LoginDTO labInputLogin, LabDBContext db, IMapper _mapper) =>
         {
             var getUser = await db.Labs.Where(x => x.UserName == labInputLogin.UserName).FirstOrDefaultAsync();
 
