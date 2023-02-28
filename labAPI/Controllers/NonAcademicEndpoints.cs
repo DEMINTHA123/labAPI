@@ -54,7 +54,7 @@ namespace labAPI.Controllers
             {
                 db.NonAcademic.Add(_mapper.Map<NonAcademic>(nonAcademic));
                 await db.SaveChangesAsync();
-                return TypedResults.Created($"/api/Lab/{nonAcademic.Id}", nonAcademic);
+                return TypedResults.Created($"/api/Lab", nonAcademic);
             })
             .WithName("CreateNonacademics");
 

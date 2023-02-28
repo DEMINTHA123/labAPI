@@ -37,8 +37,13 @@ namespace labAPI.Controllers
                 {
                     return TypedResults.NotFound();
                 }
-
-                db.Update(academic);
+                foundModel.Id = academic.Id;
+                foundModel.MobileNumber = academic.MobileNumber;
+                foundModel.LastName = academic.LastName;
+                foundModel.FirstName = academic.FirstName;
+                foundModel.Email = academic.Email;
+                foundModel.Experties = academic.Experties;
+                db.Update(foundModel);
                 await db.SaveChangesAsync();
 
                 return TypedResults.NoContent();
@@ -47,9 +52,9 @@ namespace labAPI.Controllers
 
             group.MapPost("/", async (AcademicInputDTO academic, LabDBContext db, IMapper _mapper) =>
             {
-                db.Academics.Add(_mapper.Map< Academic > (academic));
+                db.Academics.Add(_mapper.Map<Academic> (academic));
                 await db.SaveChangesAsync();
-                return TypedResults.Created($"/api/Lab/{academic.Id}", academic);
+                return TypedResults.Created($"/api/Lab", academic);
             })
             .WithName("CreateAcademic");
 

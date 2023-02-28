@@ -10,6 +10,9 @@ namespace labAPI
         {
             CreateMap<Lab, LabOutputDTO>();
             CreateMap<LabInputDTO, Lab>();
+            CreateMap<AcademicInputDTO, Academic>();
+            CreateMap<Academic, AcademicOutputDTO>();
+
         }
     }
 }
