@@ -37,12 +37,12 @@ namespace labAPI.Controllers
                 {
                     return TypedResults.NotFound();
                 }
-                foundModel.Id = academic.Id;
+                //foundModel.Id = Id;
                 foundModel.MobileNumber = academic.MobileNumber;
                 foundModel.LastName = academic.LastName;
                 foundModel.FirstName = academic.FirstName;
                 foundModel.Email = academic.Email;
-                foundModel.Experties = academic.Experties;
+                foundModel.Experties = academic.Experties;  
                 db.Update(foundModel);
                 await db.SaveChangesAsync();
 
