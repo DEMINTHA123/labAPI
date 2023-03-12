@@ -24,6 +24,7 @@ namespace labAPI.Migrations
             modelBuilder.Entity("labAPI.Entities.Academic", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
@@ -48,13 +49,16 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Academics", (string)null);
+                    b.ToTable("Academics");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Chemicals", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Construction")
                         .IsRequired()
@@ -74,30 +78,40 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chemicals", (string)null);
+                    b.ToTable("Chemicals");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Elements", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("MolarMass")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("MolarMass")
+                        .HasColumnType("real");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Elements", (string)null);
+                    b.ToTable("Elements");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Equipment", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -108,13 +122,16 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Equipment", (string)null);
+                    b.ToTable("Equipment");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Experiment", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Pro")
                         .IsRequired()
@@ -122,13 +139,16 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Experiment", (string)null);
+                    b.ToTable("Experiment");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Lab", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -152,12 +172,13 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Labs", (string)null);
+                    b.ToTable("Labs");
                 });
 
             modelBuilder.Entity("labAPI.Entities.NonAcademic", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
@@ -182,13 +203,16 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NonAcademic", (string)null);
+                    b.ToTable("NonAcademic");
                 });
 
             modelBuilder.Entity("labAPI.Entities.Reactions", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Structure")
                         .IsRequired()
@@ -196,7 +220,7 @@ namespace labAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reactions", (string)null);
+                    b.ToTable("Reactions");
                 });
 #pragma warning restore 612, 618
         }

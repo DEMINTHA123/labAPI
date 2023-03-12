@@ -42,8 +42,12 @@ namespace labAPI.Controllers
                 {
                     return TypedResults.NotFound();
                 }
-
-                db.Update(nonAcademic);
+                foundModel.MobileNumber = nonAcademic.MobileNumber;
+                foundModel.LastName = nonAcademic.LastName;
+                foundModel.FirstName = nonAcademic.FirstName;
+                foundModel.Email = nonAcademic.Email;
+                foundModel.PhysicalSkill = nonAcademic.PhysicalSkill;
+                db.Update(foundModel);
                 await db.SaveChangesAsync();
 
                 return TypedResults.NoContent();

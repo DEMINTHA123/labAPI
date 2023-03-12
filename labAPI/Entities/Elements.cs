@@ -7,8 +7,11 @@ namespace labAPI.Entities
     public class Elements
     {
         [Key]
-        public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public string Name { get; set; }
-        public int MolarMass { get; set; }
+
+        public string Symbol { get; set; }
+        public float MolarMass { get; set; }
     }
 }
