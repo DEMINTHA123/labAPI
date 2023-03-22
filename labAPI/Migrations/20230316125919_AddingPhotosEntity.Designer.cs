@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using labAPI;
 
@@ -10,9 +11,11 @@ using labAPI;
 namespace labAPI.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230316125919_AddingPhotosEntity")]
+    partial class AddingPhotosEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,15 +124,14 @@ namespace labAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhotoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Qty")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PhotoId");
 
                     b.ToTable("Equipment");
                 });
@@ -223,9 +225,9 @@ namespace labAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Blob")
+                    b.Property<byte[]>("Blob")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ImageTitle")
                         .IsRequired()
@@ -251,17 +253,6 @@ namespace labAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reactions");
-                });
-
-            modelBuilder.Entity("labAPI.Entities.Equipment", b =>
-                {
-                    b.HasOne("labAPI.Entities.Photo", "Photo")
-                        .WithMany()
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Photo");
                 });
 #pragma warning restore 612, 618
         }

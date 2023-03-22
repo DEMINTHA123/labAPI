@@ -17,7 +17,7 @@ public static class ChemicalsEndpoints
 
         group.MapGet("/", async (LabDBContext db) =>
         {
-            return await db.Labs.ToListAsync();
+            return await db.Chemicals.ToListAsync();
         })
         .WithName("GetAllChemicals");
 
@@ -30,16 +30,19 @@ public static class ChemicalsEndpoints
         })
         .WithName("GetChemicalById");
 
-        group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (string id, ChemicalsInputDTO chemicals, LabDBContext db) =>
+        group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (int id, ChemicalsInputDTO chemicals, LabDBContext db) =>
         {
-            var foundModel = await db.Academics.FindAsync(id);
+            var foundModel = await db.Chemicals.FindAsync(id);
 
             if (foundModel is null)
             {
                 return TypedResults.NotFound();
             }
-
-            db.Update(chemicals);
+            foundModel.Name = chemicals.Name;
+            foundModel.Symbol = chemicals.Symbol;
+            foundModel.MatterState =  chemicals.MatterState;
+            foundModel.Construction = chemicals.Construction;
+            db.Update(foundModel);
             await db.SaveChangesAsync();
 
             return TypedResults.NoContent();
@@ -48,13 +51,13 @@ public static class ChemicalsEndpoints
 
         group.MapPost("/", async (ChemicalsInputDTO chemicals, LabDBContext db, IMapper _mapper) =>
         {
-            db.Chemicals.Add(_mapper.Map< Chemicals > (chemicals));
+            db.Chemicals.Add(_mapper.Map<Chemicals>(chemicals));
             await db.SaveChangesAsync();
-            return TypedResults.Created($"/api/Lab/{chemicals.Id}", chemicals);
+            return TypedResults.Created($"/api/Lab/", chemicals);
         })
         .WithName("CreateChemical");
 
-        group.MapDelete("/{id}", async Task<Results<Ok<ChemicalsOutputDTO>, NotFound>> (string id, LabDBContext db, IMapper _mapper) =>
+        group.MapDelete("/{id}", async Task<Results<Ok<ChemicalsOutputDTO>, NotFound>> (int id, LabDBContext db, IMapper _mapper) =>
         {
             if (await db.Chemicals.FindAsync(id) is Chemicals chemicals)
             {

@@ -3,18 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace labAPI.Entities
 {
-    public class Equipment
+    public class Photo
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int Qty { get; set; }
 
-      
-        public string Description { get; set; }
-
-        public Photo? Photo { get; set; }
+        public string ImageTitle { get; set; }
+        public string Blob { get; set; }
     }
 }

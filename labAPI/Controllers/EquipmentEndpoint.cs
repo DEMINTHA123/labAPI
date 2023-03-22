@@ -9,6 +9,7 @@ using AutoMapper;
 using labAPI.DTOs.ChemicalsDTO;
 using labAPI.DTOs.ElementsDTO;
 using labAPI.DTOs.EquipmentDTO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace labAPI.Controllers;
 
@@ -16,7 +17,7 @@ public static class EquipmentEndpoints
 {
     public static void MapEquipmentEndpoints(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/api/Equipment");
+        var group = routes.MapGroup("/minimalapi/Equipment");
 
         group.MapGet("/", async (LabDBContext db) =>
         {
@@ -43,7 +44,7 @@ public static class EquipmentEndpoints
 
        .WithName("GetEquipmentNameById");
 
-        group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (string id, Equipment equipment, LabDBContext db) =>
+        group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (int id, Equipment equipment, LabDBContext db) =>
         {
             var foundModel = await db.Equipment.FindAsync(id);
 
@@ -51,29 +52,34 @@ public static class EquipmentEndpoints
             {
                 return TypedResults.NotFound();
             }
+            foundModel.Name = equipment.Name;
+            foundModel.Qty = equipment.Qty;
+            foundModel.Description = equipment.Description;
+            foundModel.Photo = equipment.Photo;
+            db.Update(foundModel);
 
-            db.Update(equipment);
+            db.Update(foundModel);
             await db.SaveChangesAsync();
 
             return TypedResults.NoContent();
         })
         .WithName("UpdateEquipment");
 
-        group.MapPost("/", async (Equipment equipment, LabDBContext db) =>
+        group.MapPost("/", async (EquipmentInputDTO equipment, LabDBContext db, IMapper _mapper) =>
         {
-            db.Equipment.Add(equipment);
+            db.Equipment.Add(_mapper.Map<Equipment>(equipment));
             await db.SaveChangesAsync();
-            return TypedResults.Created($"/api/Lab/{equipment.Id}", equipment);
+            return TypedResults.Created($"/api/Lab/", equipment);
         })
         .WithName("CreateEquipment");
 
-        group.MapDelete("/{id}", async Task<Results<Ok<Equipment>, NotFound>> (string id, LabDBContext db) =>
+        group.MapDelete("/{id}", async Task<Results<Ok<Equipment>, NotFound>> (int id, LabDBContext db) =>
         {
-            if (await db.Equipment.FindAsync(id) is Equipment elements)
+            if (await db.Equipment.FindAsync(id) is Equipment equipment)
             {
-                db.Equipment.Remove(elements);
+                db.Equipment.Remove(equipment);
                 await db.SaveChangesAsync();
-                return TypedResults.Ok(elements);
+                return TypedResults.Ok(equipment);
             }
 
             return TypedResults.NotFound();

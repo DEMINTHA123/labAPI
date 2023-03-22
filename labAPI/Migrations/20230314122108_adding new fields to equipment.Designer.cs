@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using labAPI;
 
@@ -10,9 +11,11 @@ using labAPI;
 namespace labAPI.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230314122108_adding new fields to equipment")]
+    partial class addingnewfieldstoequipment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,15 +124,14 @@ namespace labAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhotoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Qty")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PhotoId");
 
                     b.ToTable("Equipment");
                 });
@@ -215,27 +217,6 @@ namespace labAPI.Migrations
                     b.ToTable("NonAcademic");
                 });
 
-            modelBuilder.Entity("labAPI.Entities.Photo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Blob")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Photos");
-                });
-
             modelBuilder.Entity("labAPI.Entities.Reactions", b =>
                 {
                     b.Property<int>("Id")
@@ -251,17 +232,6 @@ namespace labAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reactions");
-                });
-
-            modelBuilder.Entity("labAPI.Entities.Equipment", b =>
-                {
-                    b.HasOne("labAPI.Entities.Photo", "Photo")
-                        .WithMany()
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Photo");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;      
 using labAPI.Controllers;
 using AutoMapper;
+using labAPI.Repos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,8 @@ builder.Services.AddDbContext<LabDBContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("LabDBConnectionString");
     options.UseSqlServer(connectionString);
-}); 
+});
+builder.Services.AddTransient<IEquipmentRepository, EquipmentRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -61,3 +63,5 @@ app.MapElementsEndpoints();
 app.MapExperimentEndpoints();
 
 app.Run();
+
+app.UseStaticFiles();
