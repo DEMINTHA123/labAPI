@@ -13,17 +13,15 @@ namespace labAPI.Repos
         {
             _context = context;
         }
-        public async Task<bool> Add(Equipment equipment)
+        public async Task Add(Equipment equipment)
         {
             try
             {
                 _context.Equipment.Add(equipment);
-                await _context.SaveChangesAsync();
-                return true;
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
-                return false;
                 throw;
             }
         }
@@ -46,7 +44,7 @@ namespace labAPI.Repos
         {
             try
             {
-                return await _context.Equipment.Include(x => x.Photo).ToListAsync();
+                return await _context.Equipment.ToListAsync();
             }
             catch (Exception)
             {

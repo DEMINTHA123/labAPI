@@ -40,19 +40,16 @@ namespace labAPI.Controllers
 
         // POST api/<EquimpentController>
         [HttpPost]
-        public async void Post([FromForm] EquipmentInputDTO equipmentDTO)
+        public async void Post(EquipmentInputDTO equipmentDTO)
         {
-            //var file = _repository.AddPhoto(equipmentDTO.Photo);
-            var eqipment = new Equipment
-            {
-               // Photo = file,
-                Description = equipmentDTO.Description,
-                Name = equipmentDTO.Name,
-                Qty = equipmentDTO.Qty
-            };
-            await _repository.Add(eqipment);
+            await _repository.Add(_mapper.Map<Equipment>(equipmentDTO));
         }
 
+        [HttpPost("upload-image")]
+        public async void Uploadimage(EquipmentInputDTO equipmentDTO)
+        {
+            await _repository.Add(_mapper.Map<Equipment>(equipmentDTO));
+        }
         // PUT api/<EquimpentController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

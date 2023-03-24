@@ -23,7 +23,7 @@ namespace labAPI
             CreateMap<Chemicals, ChemicalsOutputDTO>();
             CreateMap<ChemicalsInputDTO, Chemicals>();
 
-            CreateMap<Equipment, EquipmentOutputDTO>().ForMember(dest => dest.Photo, sour => sour.MapFrom<int>(src => src.Photo.Id));
+            CreateMap<Equipment, EquipmentOutputDTO>().ForMember(dest => dest.Photo, sour => sour.MapFrom<int?>(src => src.PhotoId));
             CreateMap<EquipmentInputDTO, Equipment>();
 
 

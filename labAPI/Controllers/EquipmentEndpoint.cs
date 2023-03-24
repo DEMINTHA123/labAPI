@@ -44,26 +44,26 @@ public static class EquipmentEndpoints
 
        .WithName("GetEquipmentNameById");
 
-        group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (int id, Equipment equipment, LabDBContext db) =>
-        {
-            var foundModel = await db.Equipment.FindAsync(id);
+        //group.MapPut("/{id}", async Task<Results<NotFound, NoContent>> (int id, Equipment equipment, LabDBContext db) =>
+        //{
+        //    var foundModel = await db.Equipment.FindAsync(id);
 
-            if (foundModel is null)
-            {
-                return TypedResults.NotFound();
-            }
-            foundModel.Name = equipment.Name;
-            foundModel.Qty = equipment.Qty;
-            foundModel.Description = equipment.Description;
-            foundModel.Photo = equipment.Photo;
-            db.Update(foundModel);
+        //    if (foundModel is null)
+        //    {
+        //        return TypedResults.NotFound();
+        //    }
+        //    foundModel.Name = equipment.Name;
+        //    foundModel.Qty = equipment.Qty;
+        //    foundModel.Description = equipment.Description;
+        //    foundModel.Photo = equipment.Photo;
+        //    db.Update(foundModel);
 
-            db.Update(foundModel);
-            await db.SaveChangesAsync();
+        //    db.Update(foundModel);
+        //    await db.SaveChangesAsync();
 
-            return TypedResults.NoContent();
-        })
-        .WithName("UpdateEquipment");
+        //    return TypedResults.NoContent();
+        //})
+        //.WithName("UpdateEquipment");
 
         group.MapPost("/", async (EquipmentInputDTO equipment, LabDBContext db, IMapper _mapper) =>
         {

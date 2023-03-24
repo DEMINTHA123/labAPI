@@ -7,7 +7,6 @@ namespace labAPI.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
         public int Id { get; set; }
         public string Name { get; set; }
         public int Qty { get; set; }
@@ -15,6 +14,6 @@ namespace labAPI.Entities
       
         public string Description { get; set; }
 
-        public Photo? Photo { get; set; }
+        public int? PhotoId { get; set; } = null;
     }
 }
